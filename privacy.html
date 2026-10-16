@@ -15,34 +15,58 @@
 <p>Eclipse Signal Uploader ("the tool") is operated by Onurhan Demir, an
 individual developer. Contact: onur38740@gmail.com.</p>
 <h2>Use of YouTube API Services</h2>
-<p>The tool uses YouTube API Services. By using the tool you agree to be bound by
+<p>The tool uses YouTube API Services (the YouTube Data API and the YouTube Analytics API). By using the tool you agree to be bound by
 the <a href="https://www.youtube.com/t/terms">YouTube Terms of Service</a>. Google's
 handling of your data is described in the
 <a href="https://policies.google.com/privacy">Google Privacy Policy</a>.</p>
 <h2>What data the tool accesses</h2>
-<p>Through Google OAuth 2.0, with the scope
-<code>https://www.googleapis.com/auth/youtube</code>, the tool accesses only the
-YouTube channels owned by the authorizing Google account in order to upload
-videos, set video metadata and privacy status, and read the details of videos
-it has uploaded. It does not read comments, subscribers, analytics, or any
-data belonging to other users or channels.</p>
+<p>Through Google OAuth 2.0 the tool accesses only the YouTube channel owned by the
+authorizing Google account, with these scopes:</p>
+<ul>
+<li><code>https://www.googleapis.com/auth/youtube</code> — to upload videos, set video
+metadata and privacy status or scheduled publish time, and read the details of videos
+it has uploaded.</li>
+<li><code>https://www.googleapis.com/auth/yt-analytics.readonly</code> — to read, for a
+chosen date range, these raw YouTube Analytics values for the channel and for each
+video: views, estimated minutes watched, average view duration, subscribers gained
+and subscribers lost.</li>
+<li><code>https://www.googleapis.com/auth/youtube.force-ssl</code> — requested for uploading
+caption (subtitle) tracks to the operator's own videos, written from the operator's own
+narration scripts. Caption upload is not in use yet.</li>
+</ul>
+<p>The tool does not read comments and does not access data belonging to other users or
+channels.</p>
 <h2>What data is stored and where</h2>
 <p>The tool stores, in local files on the operator's own computer, the OAuth access and
 refresh tokens and a record of each video it has uploaded: the video identifier, the
 requested privacy status and scheduled publish time, and the status details read back
-from YouTube after upload and scheduling.</p>
+from YouTube after upload and scheduling. It also stores the weekly analytics values
+listed above, with the identifiers of the videos they belong to.</p>
 <h2>How the data is shared</h2>
 <p>The tool sends status messages to the operator's own Telegram chat. These messages
 include links to the operator's own videos, their titles and their scheduled publish
-times. Apart from Telegram, which delivers these messages, no data is shared with,
-sold to, or disclosed to any third party, and no data is stored on any server operated
-by the tool's developer.</p>
+times. The weekly analytics values may be sent to Anthropic's Claude API so that a
+written analysis can be prepared for the operator. Apart from Telegram and Anthropic, no
+data is shared with, sold to, or disclosed to any third party, and no data is stored on
+any server operated by the tool's developer.</p>
+<p>The tool shows the values returned by YouTube Analytics as they are, labelled with
+their date range; it does not calculate other metrics from them.</p>
 <h2>Data retention and deletion</h2>
-<p>Stored tokens and video identifiers are kept only as long as the tool is in
-use and are deleted by removing the local files. Identifiers of videos
-uploaded by the tool are retained as authorized data for as long as needed
-to prevent duplicate uploads; no other YouTube API data is stored for more
-than 30 days, in line with the YouTube API Services Developer Policies.</p>
+<ul>
+<li>Stored tokens are kept only as long as the tool is in use. Identifiers of videos
+uploaded by the tool are retained as authorized data for as long as needed to prevent
+duplicate uploads.</li>
+<li>Status details read back from YouTube are kept for at most 30 days: a daily cleanup
+deletes them after 30 days, unless the weekly analytics run has refreshed them from
+YouTube in the meantime.</li>
+<li>Weekly analytics values are kept as authorized data only while the tool's
+authorization is confirmed at least every 30 days. Each successful weekly run confirms
+it; if no run has confirmed it for 30 days, the daily cleanup deletes all stored
+analytics values. Each weekly run also checks that the videos still exist and deletes the
+values of videos that are no longer on YouTube.</li>
+<li>No other YouTube API data is stored for more than 30 days, in line with the YouTube API
+Services Developer Policies.</li>
+</ul>
 <h2>Deleting stored data</h2>
 <p>You can ask for the data stored by the tool to be deleted by emailing
 onur38740@gmail.com. It will be deleted within 7 calendar days. Deleting the tool's
